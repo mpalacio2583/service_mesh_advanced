@@ -1,0 +1,20 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: bookinfo-virtualservice
+spec:
+  hosts:
+  - 
+  gateways:
+  - productpage-bookinfo.apps.cluster-031c.031c.sandbox1281.opentlc.com
+  http:
+  - match:
+    - uri:
+        prefix: /incidents
+    route:
+    - destination:
+        port:
+          number: 8090
+        host: productpage-bookinfo.apps.cluster-031c.031c.sandbox1281.opentlc.com
+
