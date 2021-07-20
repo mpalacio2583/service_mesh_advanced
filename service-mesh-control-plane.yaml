@@ -3,7 +3,17 @@ kind: ServiceMeshControlPlane
 metadata:
   name: service-mesh-installation
 spec:
-  version: v1.1
+  version: v2.0
+
+  security:
+    dataPlane:
+      mtls: true
+    certificateAuthority:
+      type: Istiod
+      istiod:
+        type: PrivateKey
+        privateKey:
+          rootCADir: /etc/cacerts
 
   threeScale:
     enabled: false
@@ -49,10 +59,7 @@ spec:
       traceSampling: 100.0
 
     kiali:
-      dashboard:
-        user: admin
-        passphrase: redhat
-    tracing:
       enabled: true
-
+    prometheus:
+      enabled: true
 
