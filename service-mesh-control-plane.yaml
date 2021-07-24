@@ -1,65 +1,27 @@
 apiVersion: maistra.io/v2
 kind: ServiceMeshControlPlane
 metadata:
+  namespace: bookretail-istio-system
   name: service-mesh-installation
 spec:
-  version: v2.0
-
-  security:
-    dataPlane:
-      mtls: true
-    certificateAuthority:
-      type: Istiod
-      istiod:
-        type: PrivateKey
-        privateKey:
-          rootCADir: /etc/cacerts
-
   threeScale:
     enabled: false
-
-  istio:
-    global:
-      mtls:
-        enabled: false
-        auto: false
-      disablePolicyChecks: false
-      proxy:
-        resources:
-          requests:
-            cpu: 100m
-            memory: 128Mi
-          limits:
-            cpu: 500m
-            memory: 128Mi
-
-    gateways:
-      istio-egressgateway:
-        autoscaleEnabled: false
-      istio-ingressgateway:
-        autoscaleEnabled: false
-        ior_enabled: false
-
-    mixer:
-      policy:
-        autoscaleEnabled: false
-
-      telemetry:
-        autoscaleEnabled: false
-        resources:
-          requests:
-            cpu: 100m
-            memory: 1G
-          limits:
-            cpu: 500m
-            memory: 4G
-
-    pilot:
-      autoscaleEnabled: false
-      traceSampling: 100.0
-
+  tracing:
+    sampling: 10000
+    type: Jaeger
+  policy:
+    type: Istiod
+  addons:
+    grafana:
+      enabled: true
+    jaeger:
+      install:
+        storage:
+          type: Memory
     kiali:
       enabled: true
     prometheus:
       enabled: true
-
+  version: v2.0
+  telemetry:
+    type: Istiod
